@@ -5,9 +5,16 @@ import { Session } from 'meteor/session';
 class CollFactory {
     create( coll_name ){
         var colls = Session.get('collnames')
-        if ( coll_name in colls){
+        var check_colls = true
+        if (colls == null){
+            check_colls = false
+        } 
+        if ( colls  && coll_name in colls){
             this.collection = Session.get('collecions')[coll_name]
-        } else {
+            check_colls = true
+        } 
+        
+        if (check_colls == false ) {
             var all_colls = Session.get('collections')
             this.collection = new Mongo.Collection(coll_name);
             all_cols[col_name] = this.collection;

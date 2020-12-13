@@ -11,6 +11,7 @@ import {json_get,json_set} from '/imports/api/json_set';
 const raw_data = require('/imports/api/jourard_self_disclosure.json');
 
 Template.body.onCreated(()=>{
+    Session.set('collnames',[])
     var doc = collFactory.get( 'ans_jourard_self_disclosure')
     Session.set('doc', doc)    
 })
