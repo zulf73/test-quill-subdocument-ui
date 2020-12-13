@@ -3,11 +3,10 @@ import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { Router } from 'meteor/iron:router';
-
 import Quill from 'quilljs';
 import './body.html';
 import 'quilljs/dist/quill.snow.css'
-
+import {json_get,json_set} from '/imports/api/json_set';
 const raw_data = require('/imports/api/jourard_self_disclosure.json');
 
 Template.body.onCreated(()=>{
@@ -110,11 +109,11 @@ Router.route('/ans', ()=>{
     var q = this.param.query
     var name = q['name']
     var user = q['user']
-    var path = q['path'
+    var path = q['path']
     // check doc if not session
     // create the doc insert in db 
     // and retry
-    var doc = Session.get('ans');
+    var doc = Session.get('doc');
     var sdoc = json_get( doc, path);
     var quill = Quill('#editor')
     this.render( 'subdoc', sdoc)
