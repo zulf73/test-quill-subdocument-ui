@@ -4,15 +4,15 @@ import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { Router } from 'meteor/iron:router';
 import Quill from 'quilljs';
+import { CollFactory } from '/imports/api/collfactory';
 import './body.html';
 import 'quilljs/dist/quill.snow.css'
 import {json_get,json_set} from '/imports/api/json_set';
 const raw_data = require('/imports/api/jourard_self_disclosure.json');
 
 Template.body.onCreated(()=>{
-    Session.set('doc',{})
-    //var res_coll= Mongo.Collection('survey_IPIP120')
-    //Session.set('res_collection', res_coll)    
+    var doc = CollFactory.get( 'ans_jourard_self_disclosure')
+    Session.set('doc', doc)    
 })
   
 Template.body.events({
@@ -20,12 +20,6 @@ Template.body.events({
 
 
 Template.body.helpers({
-
-//  questions: [
-//    { question: 'This is task 1' },
-//    { question: 'This is task 2' },
-//    { question: 'This is task 3' },
-    //  ],
     questions: raw_data['value'],
 
 });
@@ -35,14 +29,8 @@ Template.full_survey.onCreated(()=>{
 })
 
 Template.full_survey.helpers({
-
-    //  questions: [
-    //    { question: 'This is task 1' },
-    //    { question: 'This is task 2' },
-    //    { question: 'This is task 3' },
-        //  ],
         questions: raw_data['value'],
-    });
+});
 
 Template.full_survey.events({
     'click .submit'(e,t){
@@ -88,7 +76,7 @@ Template.survey_answer.events({
 Template.survey_link.helpers({
     // need name of survey and user
     // name hardcode 
-    name : "jourard",
+    name : "jourard_self_disclosure",
     user: "myself",
 
     subdoc_link : (qnum) =>{
@@ -105,6 +93,21 @@ Template.survey_link.helpers({
     }
 })
 
+Template.survey_text.event({
+    'click .submit'(e,t){
+        var doc = Session.get('doc')
+           var res_coll = Session.get('res_collection')['jourard_self_disclosure']
+        
+        // debug this update
+        
+        res_coll.update( { 
+            name: 'jourard_self_disclosure',
+            user: user
+
+        }, doc)
+
+    }
+})
 Router.route('/ans', ()=>{
     var q = this.param.query
     var name = q['name']

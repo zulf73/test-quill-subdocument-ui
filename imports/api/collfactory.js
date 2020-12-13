@@ -32,3 +32,5 @@ class CollFactory {
         }
     }
 }
+
+export default CollFactory;
