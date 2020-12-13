@@ -33,4 +33,5 @@ class CollFactory {
     }
 }
 
-export default CollFactory;
+var collFactory = new CollFactory();
+export default collFactory;

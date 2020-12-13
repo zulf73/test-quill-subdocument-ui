@@ -4,14 +4,14 @@ import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { Router } from 'meteor/iron:router';
 import Quill from 'quilljs';
-import { CollFactory } from '/imports/api/collfactory';
+import collFactory from '/imports/api/collfactory';
 import './body.html';
 import 'quilljs/dist/quill.snow.css'
 import {json_get,json_set} from '/imports/api/json_set';
 const raw_data = require('/imports/api/jourard_self_disclosure.json');
 
 Template.body.onCreated(()=>{
-    var doc = CollFactory.get( 'ans_jourard_self_disclosure')
+    var doc = collFactory.get( 'ans_jourard_self_disclosure')
     Session.set('doc', doc)    
 })
   
@@ -55,23 +55,6 @@ Template.survey_text.rendered = ()=>{
 //      });
 }
 
-Template.survey_answer.events({
-    'click'(e,t){
-        // the name of the radio group for question i
-        // is just {{i}}
-        var control= e.target;
-        var val = control.value;
-        console.log(val);
-        
-        // set value to Session doc
-        var doc = Session.get('doc')
-        // document has just the answers
-        // <question number>:<answer>
-        // the click produced the answer
-        doc[control.name] = val
-        Session.set('doc',doc)
-    }
-})
 
 Template.survey_link.helpers({
     // need name of survey and user
@@ -93,13 +76,13 @@ Template.survey_link.helpers({
     }
 })
 
-Template.survey_text.event({
+Template.survey_text.events({
     'click .submit'(e,t){
         var doc = Session.get('doc')
-           var res_coll = Session.get('res_collection')['jourard_self_disclosure']
+        var res_coll = Session.get('res_collection')['jourard_self_disclosure']
         
         // debug this update
-        
+
         res_coll.update( { 
             name: 'jourard_self_disclosure',
             user: user
@@ -108,6 +91,11 @@ Template.survey_text.event({
 
     }
 })
+
+Router.route('/', () =>{
+    this.render('body');
+});
+
 Router.route('/ans', ()=>{
     var q = this.param.query
     var name = q['name']
