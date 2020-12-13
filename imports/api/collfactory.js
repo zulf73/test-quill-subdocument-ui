@@ -30,6 +30,12 @@ class CollFactory {
 
     get( coll_name ){
         var coll_names = Session.get('coll_names')
+        console.log('coll names:')
+        console.log( coll_names )
+        if (coll_names == null ) {
+            this.collection = this.create( coll_name)
+            return this.collection;
+        }
         if (coll_name in coll_names){
             this.collection = Session.get('collections')[coll_name]
             return this.collection;
