@@ -1,0 +1,58 @@
+<body>
+    <div class="container">
+      <header>
+        <h1>Survey Questions</h1>
+      </header>
+
+  
+
+      <ul>
+        {{#each questions}}
+          {{> question}}
+        {{/each}}
+      </ul>
+    </div>
+  </body>
+
+  
+
+<template name="question">
+  <li>
+    <div>
+      {{question}}
+    </div>
+    <div>
+      {{#each answers}}
+      {{a.content}}
+      {{/each}}
+     </div>
+  </li>
+</template>
+
+<template name="choice">
+  <div>
+    <input type="radio" id="one" name="drone" value={{answers[0]}}
+           checked>
+    <label for="one">{{answers[0]}}</label>
+  </div>
+  
+  <div>
+    <input type="radio" id="two" name="drone" value={{answers[1]}}>
+    <label for="two">{{answers[1]}}</label>
+  </div>
+  
+  <div>
+    <input type="radio" id="three" name="drone" value={{answers[2]}}>
+    <label for="three">{{answers[2]}}</label>
+  </div>
+  
+  <div>
+    <input type="radio" id="four" name="drone" value={{answers[3]}}>
+    <label for="four">{{answers[3]}}</label>
+  </div>
+  
+  <div>
+    <input type="radio" id="five" name="drone" value={{answers[4]}}>
+    <label for="five">{{answers[4]}}</label>
+  </div>
+</template>

@@ -1,0 +1,15 @@
+import { Template } from 'meteor/templating';
+import './body.html';
+import raw_data from '/imports/api/IPIP120';
+
+Template.body.helpers({
+
+//  questions: [
+//    { question: 'This is task 1' },
+//    { question: 'This is task 2' },
+//    { question: 'This is task 3' },
+    //  ],
+    questions: raw_data['value'],
+
+});
+

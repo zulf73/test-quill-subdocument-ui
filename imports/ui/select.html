@@ -1,0 +1,13 @@
+<template name="choice">
+    <li>
+      <div>  
+        <select  name="hello">
+          {{#each a in answers}}
+          {{#with a}}
+          <option value={{content}}>{{content}}</option>
+          {{/with}}
+          {{/end}}
+      </select>
+    </div>
+  </li>
+  </template>

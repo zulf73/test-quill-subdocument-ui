@@ -1,0 +1,41 @@
+<body>
+  <div class="container">
+    <header>
+      <h1>Self-Disclosure Questions</h1>
+    </header>  
+    {{> full_survey}}
+  </div>
+</body>
+
+<template name="full_survey">
+  <ul>
+    {{#each q in questions}}      
+    {{> survey_item index=@index obj=q}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="question">
+  <li>
+    <div>
+      <p><span>{{question}}</span></p>
+    </div>
+  </li>
+</template>
+
+<template name = "survey_item">
+  <div class="survey_item">
+  <li>
+    <span>{{index}}.</span>
+    <span> {{obj.question}}</span>
+    {{> survey_link qnum=index}}
+  </li>
+</div>
+</template>
+
+
+<template name="survey_link">
+  <div>
+    <a href={{subdoc_link qnum}}>{{subdoc_desc qnum}}</a>
+  </div>
+</template>
