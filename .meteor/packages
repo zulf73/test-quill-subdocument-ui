@@ -26,3 +26,4 @@ session@1.2.0
 blaze
 iron:router
 accounts-ui
+accounts-password

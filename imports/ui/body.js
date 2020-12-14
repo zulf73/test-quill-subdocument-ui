@@ -10,6 +10,24 @@ import 'quilljs/dist/quill.snow.css'
 import {json_get,json_set} from '/imports/api/json_set';
 const raw_data = require('/imports/api/jourard_self_disclosure.json');
 
+Router.route('/', () =>{
+    this.render('body');
+});
+
+Router.route('/ans', ()=>{
+    var q = this.param.query
+    var name = q['name']
+    var user = q['user']
+    var path = q['path']
+    // check doc if not session
+    // create the doc insert in db 
+    // and retry
+    var doc = Session.get('doc');
+    var sdoc = json_get( doc, path);
+    var quill = Quill('#editor')
+    this.render( 'subdoc', sdoc)
+})
+
 Template.body.onCreated(()=>{
     Session.set('collnames',[])
     var doc = collFactory.get( 'ans_jourard_self_disclosure')
@@ -64,6 +82,11 @@ Template.survey_link.helpers({
     user: "myself",
 
     subdoc_link : (qnum) =>{
+        var name = "jourard_self_disclosure";
+        var user = Meteor.user().username;
+        if (user == null){
+            user = "myself";
+        }
         var lk = "/ans?"
         lk = lk + "name=" + name
         lk = lk + "&user=" + user
@@ -93,20 +116,3 @@ Template.survey_text.events({
     }
 })
 
-Router.route('/', () =>{
-    this.render('body');
-});
-
-Router.route('/ans', ()=>{
-    var q = this.param.query
-    var name = q['name']
-    var user = q['user']
-    var path = q['path']
-    // check doc if not session
-    // create the doc insert in db 
-    // and retry
-    var doc = Session.get('doc');
-    var sdoc = json_get( doc, path);
-    var quill = Quill('#editor')
-    this.render( 'subdoc', sdoc)
-})

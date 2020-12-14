@@ -43,7 +43,7 @@ class CollFactory {
             this.collection = Session.get('collections')[coll_name]
             return this.collection;
         } else {
-            this.collection = create( coll_name)
+            this.collection = this.create( coll_name)
             coll_names = [ coll_name ]
             console.log(coll_names)
             Session.set('coll_names', coll_names)
