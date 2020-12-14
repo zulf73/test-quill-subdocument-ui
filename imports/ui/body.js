@@ -125,7 +125,7 @@ Template.survey_item.events({
     }
 })
 
-ey_text.events({
+Template.survey_text.events({
     'click .submit'(e,t){
         var doc = Session.get('doc')
         var res_coll = Session.get('res_collection')['jourard_self_disclosure']
