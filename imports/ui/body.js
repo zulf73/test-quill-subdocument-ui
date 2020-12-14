@@ -29,9 +29,9 @@ Router.route('/ans', ()=>{
 })
 
 Template.body.onCreated(()=>{
-    Session.set('collnames',[])
+    Session.set('coll_names',[])
     var doc = collFactory.get( 'ans_jourard_self_disclosure')
-    Session.set('doc', doc)    
+    Session.set('doc', doc)
 })
   
 Template.body.events({
@@ -61,6 +61,16 @@ Template.full_survey.events({
     }
 
 })
+
+
+Template.survey_item.onCreated(()=>{
+    var doc = Settings.get('doc')
+    // set something decent
+    new_val = { "question": question,
+                "answer": answer }
+    json_set( doc, ".value["+index+"]", new_val)
+    Settings.set('doc',doc)
+});
 
 Template.survey_text.rendered = ()=>{
     console.log('before quill')
@@ -100,7 +110,22 @@ Template.survey_link.helpers({
     }
 })
 
-Template.survey_text.events({
+Template.survey_item.events({
+    'click .submit'(e,t){
+        var doc = Session.get('doc')
+        var res_coll = Session.get('res_collection')['jourard_self_disclosure']
+        
+        // debug this update
+
+        res_coll.update( { 
+            name: 'jourard_self_disclosure',
+            user: Meteor.user().username
+        }, doc)
+
+    }
+})
+
+ey_text.events({
     'click .submit'(e,t){
         var doc = Session.get('doc')
         var res_coll = Session.get('res_collection')['jourard_self_disclosure']

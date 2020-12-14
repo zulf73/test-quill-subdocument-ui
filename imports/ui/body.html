@@ -9,11 +9,13 @@
 </body>
 
 <template name="full_survey">
-  <ul>
+  <form>
     {{#each q in questions}}      
     {{> survey_item index=@index obj=q}}
     {{/each}}
   </ul>
+  <button name="submit">Submit</button>
+</form>>
 </template>
 
 <template name="question">
@@ -37,7 +39,7 @@
 
 <template name="survey_link">
   <div>
-    <a href={{subdoc_link qnum}}>{{subdoc_desc qnum}}</a>
+    <a href={{subdoc_link qnum}}>{{subdoc_desc qnum}} {{subdoc_link qnum}}</a>
   </div>
 </template>
 
