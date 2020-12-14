@@ -33,7 +33,10 @@ class CollFactory {
         console.log('coll names:')
         console.log( coll_names )
         if (coll_names == null ) {
-            this.collection = this.create( coll_name)
+            this.collection = this.create( coll_name);
+            coll_names = [ coll_name ]
+            console.log(coll_names)
+            Session.set('coll_names', coll_names)
             return this.collection;
         }
         if (coll_name in coll_names){
@@ -41,6 +44,9 @@ class CollFactory {
             return this.collection;
         } else {
             this.collection = create( coll_name)
+            coll_names = [ coll_name ]
+            console.log(coll_names)
+            Session.set('coll_names', coll_names)
             return this.collection;
         }
     }
