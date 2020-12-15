@@ -21,7 +21,7 @@ Router.route('/ans', ()=>{
     console.log(q)
     var name = q['name']
     var user = q['user']
-    var path = q['path']
+    var path = q['path'].replace(/^"(.*)"/,'$1')
     console.log(name)
     console.log(path)
     console.log(user)
@@ -29,7 +29,8 @@ Router.route('/ans', ()=>{
     // create the doc insert in db 
     // and retry
     var doc = Session.get('doc');
-    var sdoc = json_get( doc, path);
+    console.log(doc)
+    var sdoc = json_get(path,doc);
     var quill = Quill('#editor')
     console.log(sdoc)
     this.render( 'subdoc', sdoc)
@@ -39,6 +40,9 @@ Template.body.onCreated(()=>{
     var coll = collFactory.get( 'ans_jourard_self_disclosure')
     var docs = coll.find( {} )
     var doc = docs[0]
+    if (doc == null){
+        doc = { "value" : { }}
+    }
     Session.set('doc', doc)
 })
   
@@ -82,7 +86,8 @@ Template.survey_item.helpers({
     var path = ".value["+index+"]"
     console.log(path)
     console.log(new_val)
-    json_set( doc,path , new_val)
+    doc = json_set( path, doc, new_val)
+    console.log(doc)
     Sessions.set('doc',doc)
    } 
 })
