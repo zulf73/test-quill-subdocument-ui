@@ -4,7 +4,7 @@ import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { Router } from 'meteor/iron:router';
 import Quill from 'quilljs';
-import collFactory from '/imports/api/collfactory';
+import collFactory from '/lib/collfactory';
 import './body.html';
 import 'quilljs/dist/quill.snow.css'
 import {json_get,json_set} from '/imports/api/json_set';
@@ -29,8 +29,9 @@ Router.route('/ans', ()=>{
 })
 
 Template.body.onCreated(()=>{
-    Session.set('coll_names',[])
-    var doc = collFactory.get( 'ans_jourard_self_disclosure')
+    var coll = collFactory.get( 'ans_jourard_self_disclosure')
+    var docs = coll.find( {} )
+    var doc = docs[0]
     Session.set('doc', doc)
 })
   
@@ -53,23 +54,30 @@ Template.full_survey.helpers({
 
 Template.full_survey.events({
     'click .submit'(e,t){
-        var doc = Settings.get('doc')
-        res_coll= Mongo.Collection('jourard_selfdisclosure')
+        var doc = Session.get('doc')
+        res_coll= collFactory.create('jourard_selfdisclosure')
         Session.set('res_collection', res_coll)
-        res_coll.insertOne(doc)
+        res_coll.insert(doc)
         console.log(doc)
     }
 
 })
 
+Template.survey_item.helpers({
+   update_doc : (question, answer, index) => {
+    var doc = Session.get('doc')
+    // set something decent
+    var new_val = { "question": question,
+                "answer": answer }
+    var path = ".value["+index+"]"
+    console.log(path)
+    console.log(new_val)
+    json_set( doc,path , new_val)
+    Sessions.set('doc',doc)
+   } 
+})
 
 Template.survey_item.onCreated(()=>{
-    var doc = Settings.get('doc')
-    // set something decent
-    new_val = { "question": question,
-                "answer": answer }
-    json_set( doc, ".value["+index+"]", new_val)
-    Settings.set('doc',doc)
 });
 
 Template.survey_text.rendered = ()=>{
