@@ -15,16 +15,23 @@ Router.route('/', () =>{
 });
 
 Router.route('/ans', ()=>{
-    var q = this.param.query
+    var p = Router.current().params
+    console.log(p)
+    var q = p.query
+    console.log(q)
     var name = q['name']
     var user = q['user']
     var path = q['path']
+    console.log(name)
+    console.log(path)
+    console.log(user)
     // check doc if not session
     // create the doc insert in db 
     // and retry
     var doc = Session.get('doc');
     var sdoc = json_get( doc, path);
     var quill = Quill('#editor')
+    console.log(sdoc)
     this.render( 'subdoc', sdoc)
 })
 
@@ -67,6 +74,9 @@ Template.survey_item.helpers({
    update_doc : (question, answer, index) => {
     var doc = Session.get('doc')
     // set something decent
+    if (answer == null){
+        answer = "your answer here"
+    }
     var new_val = { "question": question,
                 "answer": answer }
     var path = ".value["+index+"]"
@@ -101,9 +111,12 @@ Template.survey_link.helpers({
 
     subdoc_link : (qnum) =>{
         var name = "jourard_self_disclosure";
-        var user = Meteor.user().username;
-        if (user == null){
+        var u = Meteor.user();
+
+        if (u == null){
             user = "myself";
+        } else {
+            user = u.username;
         }
         var lk = "/ans?"
         lk = lk + "name=" + name
